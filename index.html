@@ -14,10 +14,16 @@
 
     <!-- Main css -->
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-firestore.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 </head>
 <body>
 
-    <div class="main">
+    <div class="main" style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">
 
         <div class="container">
             <div class="signup-content">
@@ -29,12 +35,13 @@
                     </div>-->
                 </div>
                 <div class="signup-form">
-                    <form method="POST" class="register-form" id="register-form">
+                    <center><h1>Innerve Registration Form</h1></center>
+                    <form class="register-form" id="register-form">
                         <div class="form-row">
                             <div class="form-group">
                                     <div class="form-input">
                                             <label for="first_name" class="required">Team Name</label>
-                                            <input type="text" name="first_name" id="first_name" />
+                                            <input type="text" name="first_name" id="team_name" />
                                         </div>
                                 <div class="form-input">
                                     <label for="first_name" class="required">Team Leader's Name</label>
@@ -43,7 +50,7 @@
 
                                 <div class="form-input">
                                     <label for="company" class="required">College</label>
-                                    <input type="text" name="company" id="company" />
+                                    <input type="text" name="company" id="college" />
                                 </div>
                                 <div class="form-input">
                                     <label for="email" class="required">Email</label>
@@ -55,39 +62,44 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <div class="form-select">
+                                <div class="form-select" style="height:80px;">
                                     <div class="label-flex">
-                                        <label for="meal_preference">Team Count</label>
-                                        
+                                        <label for="meal" class="required">Team Count</label>
                                     </div>
-                                    <div class="select-list">
-                                        <select name="meal_preference" id="meal_preference">
-                                            <option value="one">One</option>
-                                            <option value="two">Two</option>
-                                            <option value="three">Three</option>
-                                            <option value="four">Four</option>
+                                    <div class="select-list form-input" style="margin-top: 0px;">
+                                        <select id="meal" style="width: 100%;padding: 12px 20px;margin: 8px 0;display: inline-block;border: 0.5px solid #ccc;border-radius: 4px;box-sizing: border-box;height: 50px;" required>
+                                            <option value="Select">Select</option>
+                                            <option value="One">One</option>
+                                            <option value="Two">Two</option>
+                                            <option value="Three">Three</option>
+                                            <option value="Four">Four</option>
                                         </select>
                                     </div>
                                 </div>
-
-
                                 <div class="form-input">
-                                    <label for="chequeno">City</label>
-                                    <input type="text" name="chequeno" id="chequeno" />
+                                    <label for="chequeno" class="required">City</label>
+                                    <input type="text" name="chequeno" id="city" required/>
+                                </div>
+                                <div class="form-input">
+                                    <label for="chequeno" class="required">Google Drive link of PPT</label>
+                                    <input type="text" name="chequeno" id="gdrive" required/>
                                 </div>
                                <!--<div class="form-input">
                                         <label for="chequeno">Upload PPT</label>
                                         <input type="file" class="file-select" accept="ppt/*,pdf/*">
                                     </div>
       --> 
-                                                              <br><br><br><br><br><br>
+                                                              <br>
                               <hr id="line">
                         <div class="form-submit">
-                            <input type="submit" value="Submit" class="submit" id="submit" name="submit" />
-                            <input type="submit" value="Reset" class="submit" id="reset" name="reset" />
+                            
+                            <input type="submit" value="Submit" class="submit" id="submit" name="submit" style="border: none;background-color:#329e5e;text-align: center;height: 50px;width: 150px;border-radius: 7px;color: white;font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;font-size: 20px;"/>
+                            <button value="Reset" style="border: none;background-color:#f14943;text-align: center;height: 50px;width: 150px;border-radius: 7px;color: white;font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;font-size: 20px;" onclick="res()">RESET</button>
                         </div>
-                    </form>
-                    <div>                            <button value="Home" class="submit" id="submit"><a src="https://innerve2k19.com">Home</a></button></div>
+                    <br>
+<div style="margin-left: 40%;"><a href="https://innerve2k19.com" style="text-decoration: none;"><input type="button" value="HOME" style="border: none;background-color:#b7beba;text-align: center;height: 50px;width: 150px;border-radius: 7px;color: white;font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;font-size: 20px;"/></a>
+ </form></div>
+                </form>
                 </div>
             </div>
         </div>
@@ -95,11 +107,22 @@
     </div>
 
     <!-- JS -->
-    <script src="vendor/jquery/jquery.min.js"></script>
+            <script src="./firestore.js"></script>
+<script>
+    function res(){
+    document.getElementById("team_name").value = "";
+    document.getElementById("first_name").value="";
+    document.getElementById("college").value="";
+    document.getElementById("email").value="";
+    document.getElementById("phone_number").value="";
+    document.getElementById("meal").value="Select";
+    document.getElementById("city").value="";
+        }
+</script>
+    
     <script src="vendor/nouislider/nouislider.min.js"></script>
     <script src="vendor/wnumb/wNumb.js"></script>
-    <script src="vendor/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="vendor/jquery-validation/dist/additional-methods.min.js"></script>
+   
     <script src="js/main.js"></script>
 </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 </html>
